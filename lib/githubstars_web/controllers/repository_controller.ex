@@ -4,7 +4,7 @@ defmodule GithubstarsWeb.RepositoryController do
   alias Githubstars.Stars
   alias Githubstars.Stars.Repository
 
-  action_fallback GithubstarsWeb.FallbackController
+  action_fallback(GithubstarsWeb.FallbackController)
 
   def index(conn, _params) do
     repositories = Stars.list_repositories()
@@ -28,13 +28,15 @@ defmodule GithubstarsWeb.RepositoryController do
   def update(conn, %{"id" => id, "repository" => repository_params}) do
     repository = Stars.get_repository!(id)
 
-    with {:ok, %Repository{} = repository} <- Stars.update_repository(repository, repository_params) do
+    with {:ok, %Repository{} = repository} <-
+           Stars.update_repository(repository, repository_params) do
       render(conn, "show.json", repository: repository)
     end
   end
 
   def delete(conn, %{"id" => id}) do
     repository = Stars.get_repository!(id)
+
     with {:ok, %Repository{}} <- Stars.delete_repository(repository) do
       send_resp(conn, :no_content, "")
     end

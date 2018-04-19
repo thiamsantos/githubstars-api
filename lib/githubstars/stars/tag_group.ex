@@ -2,7 +2,6 @@ defmodule Githubstars.Stars.TagGroup do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "tag_groups" do
     field :tags, {:array, :string}
     field :user_id, :id

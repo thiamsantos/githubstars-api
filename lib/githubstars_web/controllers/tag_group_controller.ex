@@ -4,7 +4,7 @@ defmodule GithubstarsWeb.TagGroupController do
   alias Githubstars.Stars
   alias Githubstars.Stars.TagGroup
 
-  action_fallback GithubstarsWeb.FallbackController
+  action_fallback(GithubstarsWeb.FallbackController)
 
   def index(conn, _params) do
     tag_groups = Stars.list_tag_groups()
@@ -35,6 +35,7 @@ defmodule GithubstarsWeb.TagGroupController do
 
   def delete(conn, %{"id" => id}) do
     tag_group = Stars.get_tag_group!(id)
+
     with {:ok, %TagGroup{}} <- Stars.delete_tag_group(tag_group) do
       send_resp(conn, :no_content, "")
     end

@@ -4,7 +4,7 @@ defmodule GithubstarsWeb.UserController do
   alias Githubstars.Users
   alias Githubstars.Users.User
 
-  action_fallback GithubstarsWeb.FallbackController
+  action_fallback(GithubstarsWeb.FallbackController)
 
   def index(conn, _params) do
     users = Users.list_users()
@@ -35,6 +35,7 @@ defmodule GithubstarsWeb.UserController do
 
   def delete(conn, %{"id" => id}) do
     user = Users.get_user!(id)
+
     with {:ok, %User{}} <- Users.delete_user(user) do
       send_resp(conn, :no_content, "")
     end

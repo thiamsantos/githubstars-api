@@ -2,7 +2,6 @@ defmodule Githubstars.Stars.Repository do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "repositories" do
     field :description, :string
     field :github_id, :string

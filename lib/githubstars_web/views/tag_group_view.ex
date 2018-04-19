@@ -11,7 +11,6 @@ defmodule GithubstarsWeb.TagGroupView do
   end
 
   def render("tag_group.json", %{tag_group: tag_group}) do
-    %{id: tag_group.id,
-      tags: tag_group.tags}
+    %{id: tag_group.id, tags: tag_group.tags}
   end
 end

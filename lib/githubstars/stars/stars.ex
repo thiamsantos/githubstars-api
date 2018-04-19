@@ -7,6 +7,7 @@ defmodule Githubstars.Stars do
   alias Githubstars.Repo
 
   alias Githubstars.Stars.Repository
+  alias Githubstars.Stars.TagGroup
 
   @doc """
   Returns the list of repositories.
@@ -20,22 +21,6 @@ defmodule Githubstars.Stars do
   def list_repositories do
     Repo.all(Repository)
   end
-
-  @doc """
-  Gets a single repository.
-
-  Raises `Ecto.NoResultsError` if the Repository does not exist.
-
-  ## Examples
-
-      iex> get_repository!(123)
-      %Repository{}
-
-      iex> get_repository!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_repository!(id), do: Repo.get!(Repository, id)
 
   @doc """
   Creates a repository.
@@ -53,68 +38,6 @@ defmodule Githubstars.Stars do
     %Repository{}
     |> Repository.changeset(attrs)
     |> Repo.insert()
-  end
-
-  @doc """
-  Updates a repository.
-
-  ## Examples
-
-      iex> update_repository(repository, %{field: new_value})
-      {:ok, %Repository{}}
-
-      iex> update_repository(repository, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_repository(%Repository{} = repository, attrs) do
-    repository
-    |> Repository.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Repository.
-
-  ## Examples
-
-      iex> delete_repository(repository)
-      {:ok, %Repository{}}
-
-      iex> delete_repository(repository)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_repository(%Repository{} = repository) do
-    Repo.delete(repository)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking repository changes.
-
-  ## Examples
-
-      iex> change_repository(repository)
-      %Ecto.Changeset{source: %Repository{}}
-
-  """
-  def change_repository(%Repository{} = repository) do
-    Repository.changeset(repository, %{})
-  end
-
-  alias Githubstars.Stars.TagGroup
-
-  @doc """
-  Returns the list of tag_groups.
-
-  ## Examples
-
-      iex> list_tag_groups()
-      [%TagGroup{}, ...]
-
-  """
-  def list_tag_groups do
-    Repo.all(TagGroup)
   end
 
   @doc """
@@ -167,34 +90,5 @@ defmodule Githubstars.Stars do
     tag_group
     |> TagGroup.changeset(attrs)
     |> Repo.update()
-  end
-
-  @doc """
-  Deletes a TagGroup.
-
-  ## Examples
-
-      iex> delete_tag_group(tag_group)
-      {:ok, %TagGroup{}}
-
-      iex> delete_tag_group(tag_group)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_tag_group(%TagGroup{} = tag_group) do
-    Repo.delete(tag_group)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking tag_group changes.
-
-  ## Examples
-
-      iex> change_tag_group(tag_group)
-      %Ecto.Changeset{source: %TagGroup{}}
-
-  """
-  def change_tag_group(%TagGroup{} = tag_group) do
-    TagGroup.changeset(tag_group, %{})
   end
 end
