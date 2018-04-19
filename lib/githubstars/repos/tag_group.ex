@@ -1,6 +1,8 @@
-defmodule Githubstars.Stars.TagGroup do
+defmodule Githubstars.Repos.TagGroup do
   use Ecto.Schema
   import Ecto.Changeset
+
+  @fields [:tags, :user_id, :repository_id]
 
   schema "tag_groups" do
     field :tags, {:array, :string}
@@ -13,7 +15,9 @@ defmodule Githubstars.Stars.TagGroup do
   @doc false
   def changeset(tag_group, attrs) do
     tag_group
-    |> cast(attrs, [:tags])
-    |> validate_required([:tags])
+    |> cast(attrs, @fields)
+    |> validate_required(@fields)
+    |> foreign_key_constraint(:user_id)
+    |> foreign_key_constraint(:repository_id)
   end
 end

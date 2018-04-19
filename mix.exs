@@ -40,7 +40,9 @@ defmodule Githubstars.Mixfile do
       {:credo, "~> 0.9", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.8", only: :test},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
-      {:faker, "~> 0.10"}
+      {:httpoison, "~> 1.0"},
+      {:ex_link_header, "~> 0.0.5"},
+      {:jason, "~> 1.0"}
     ]
   end
 

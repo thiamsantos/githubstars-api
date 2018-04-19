@@ -1,10 +1,13 @@
-defmodule Githubstars.Stars.Repository do
+defmodule Githubstars.Repos.Repository do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @required_fields [:name, :description, :url, :github_id]
+  @optional_fields [:language]
+
   schema "repositories" do
     field :description, :string
-    field :github_id, :string
+    field :github_id, :integer
     field :language, :string
     field :name, :string
     field :url, :string
@@ -15,7 +18,7 @@ defmodule Githubstars.Stars.Repository do
   @doc false
   def changeset(repository, attrs) do
     repository
-    |> cast(attrs, [:name, :description, :url, :language, :github_id])
-    |> validate_required([:name, :description, :url, :language, :github_id])
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end

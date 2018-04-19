@@ -1,21 +1,21 @@
-defmodule Githubstars.Users.User do
+defmodule Githubstars.Users.Create.Params do
   @moduledoc """
-  User schema.
+  Schema of a request for a client creation.
   """
   use Ecto.Schema
   import Ecto.Changeset
 
-  @fields [:name]
+  @fields [
+    :name
+  ]
 
-  schema "users" do
+  embedded_schema do
     field :name, :string
-
-    timestamps()
   end
 
   @doc false
-  def changeset(user, attrs) do
-    user
+  def changeset(attrs) do
+    %__MODULE__{}
     |> cast(attrs, @fields)
     |> validate_required(@fields)
   end

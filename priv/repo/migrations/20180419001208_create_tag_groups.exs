@@ -12,5 +12,6 @@ defmodule Githubstars.Repo.Migrations.CreateTagGroups do
 
     create(index(:tag_groups, [:user_id]))
     create(index(:tag_groups, [:repository_id]))
+    create(unique_index(:tag_groups, [:user_id, :repository_id]))
   end
 end

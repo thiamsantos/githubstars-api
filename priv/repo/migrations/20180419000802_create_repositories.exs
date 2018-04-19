@@ -7,9 +7,11 @@ defmodule Githubstars.Repo.Migrations.CreateRepositories do
       add(:description, :string)
       add(:url, :string)
       add(:language, :string)
-      add(:github_id, :string)
+      add(:github_id, :integer)
 
       timestamps()
     end
+
+    create(unique_index(:repositories, [:github_id]))
   end
 end
