@@ -68,7 +68,7 @@ defmodule Githubstars.Users.Create do
   end
 
   def parse_next_link_url(next_url) do
-    next_url.path <> Pastry.to_query_string(next_url.params)
+    "#{next_url.path}?#{URI.encode_query(next_url.params)}"
   end
 
   defp parse_and_insert_repos(body, user_id) do
