@@ -8,6 +8,8 @@ defmodule GithubstarsWeb.Router do
   scope "/api", GithubstarsWeb do
     pipe_through :api
 
-    resources "/users", UserController, only: [:create]
+    resources "/users", UserController, only: [:create] do
+      resources "/repos", RepositoryController, only: [:index]
+    end
   end
 end

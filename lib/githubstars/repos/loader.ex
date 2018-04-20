@@ -5,6 +5,12 @@ defmodule Githubstars.Repos.Loader do
   alias Githubstars.Repo
   alias Githubstars.Repos.Queries
 
+  def list_all_by_user_id(user_id) do
+    user_id
+    |> Queries.all_by_user_id()
+    |> Repo.all()
+  end
+
   def get_repo_id_by_github_id(github_id) do
     github_id
     |> Queries.one_by_github_id()

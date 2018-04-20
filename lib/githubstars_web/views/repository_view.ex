@@ -3,14 +3,10 @@ defmodule GithubstarsWeb.RepositoryView do
   alias GithubstarsWeb.RepositoryView
 
   def render("index.json", %{repositories: repositories}) do
-    %{data: render_many(repositories, RepositoryView, "repository.json")}
+    render_many(repositories, RepositoryView, "show.json")
   end
 
   def render("show.json", %{repository: repository}) do
-    %{data: render_one(repository, RepositoryView, "repository.json")}
-  end
-
-  def render("repository.json", %{repository: repository}) do
     %{
       id: repository.id,
       name: repository.name,

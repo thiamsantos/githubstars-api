@@ -5,8 +5,9 @@ defmodule GithubstarsWeb.RepositoryController do
 
   action_fallback(GithubstarsWeb.FallbackController)
 
-  def index(conn, _params) do
-    repositories = Repos.list_repositories()
-    render(conn, "index.json", repositories: repositories)
+  def index(conn, params) do
+    with {:ok, repositories} <- Repos.list(params) do
+      render(conn, "index.json", repositories: repositories)
+    end
   end
 end
