@@ -5,6 +5,7 @@ defmodule Githubstars.Users.Create do
   use Githubstars.Service
 
   alias Githubstars.Repos.Mutator, as: ReposMutator
+  alias Githubstars.Tags.Mutator, as: TagsMutator
   alias Githubstars.Repos.Loader, as: ReposLoader
   alias Githubstars.Users.Mutator
   alias Githubstars.Users.Create.Params
@@ -107,7 +108,7 @@ defmodule Githubstars.Users.Create do
     repos
     |> Enum.map(fn params ->
       case params do
-        {:ok, repo_id} -> ReposMutator.initiate_tag_groups(repo_id, user_id)
+        {:ok, repo_id} -> TagsMutator.initiate_tag_groups(repo_id, user_id)
         {:error, reason} -> {:error, reason}
       end
     end)

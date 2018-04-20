@@ -1,4 +1,4 @@
-defmodule Githubstars.Repos.TagGroup do
+defmodule Githubstars.Tags.TagGroup do
   @moduledoc """
   TagGroup schema.
   """

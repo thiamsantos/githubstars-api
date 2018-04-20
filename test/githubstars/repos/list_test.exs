@@ -10,15 +10,19 @@ defmodule Githubstars.Repos.ListTest do
     test "should return all repositories starred by the user" do
       {:ok, user} = Users.create(%{"name" => "thiamsantos"})
 
-      {:ok, %HTTPoison.Response{body: body1}} = @github_client.get("/users/thiamsantos/starred")
+      {:ok, %HTTPoison.Response{body: first_page}} =
+        @github_client.get("/users/thiamsantos/starred")
 
-      {:ok, %HTTPoison.Response{body: body2}} =
+      {:ok, %HTTPoison.Response{body: second_page}} =
         @github_client.get("/user/13632762/starred?page=2")
 
-      {:ok, %HTTPoison.Response{body: body3}} =
+      {:ok, %HTTPoison.Response{body: third_page}} =
         @github_client.get("/user/13632762/starred?page=3")
 
-      expected = Jason.decode!(body1) ++ Jason.decode!(body2) ++ Jason.decode!(body3)
+      expected =
+        [first_page, second_page, third_page]
+        |> Enum.map(&Jason.decode!/1)
+        |> Enum.concat()
 
       {:ok, actual} = List.call(%{"user_id" => user.id})
 

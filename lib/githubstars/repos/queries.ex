@@ -3,7 +3,8 @@ defmodule Githubstars.Repos.Queries do
   Database queries.
   """
   import Ecto.Query, warn: false
-  alias Githubstars.Repos.{Repository, TagGroup}
+  alias Githubstars.Repos.Repository
+  alias Githubstars.Tags.TagGroup
 
   def one_by_github_id(github_id) do
     from r in Repository,
@@ -13,7 +14,8 @@ defmodule Githubstars.Repos.Queries do
 
   def all_by_user_id(user_id) do
     from t in TagGroup,
-      join: r in Repository, on: r.id == t.repository_id,
+      join: r in Repository,
+      on: r.id == t.repository_id,
       where: t.user_id == ^user_id,
       select: r
   end

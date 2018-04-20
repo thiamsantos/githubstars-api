@@ -1,16 +1,17 @@
-defmodule GithubstarsWeb.TagGroupView do
+defmodule GithubstarsWeb.TagView do
   use GithubstarsWeb, :view
-  alias GithubstarsWeb.TagGroupView
+  alias GithubstarsWeb.TagView
 
   def render("index.json", %{tag_groups: tag_groups}) do
-    %{data: render_many(tag_groups, TagGroupView, "tag_group.json")}
+    render_many(tag_groups, TagView, "tag_group.json")
   end
 
   def render("show.json", %{tag_group: tag_group}) do
-    %{data: render_one(tag_group, TagGroupView, "tag_group.json")}
-  end
-
-  def render("tag_group.json", %{tag_group: tag_group}) do
-    %{id: tag_group.id, tags: tag_group.tags}
+    %{
+      id: tag_group.id,
+      tags: tag_group.tags,
+      user_id: tag_group.user_id,
+      repository_id: tag_group.repository_id
+    }
   end
 end

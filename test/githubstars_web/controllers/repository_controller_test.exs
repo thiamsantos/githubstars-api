@@ -13,15 +13,19 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
     test "renders user when data is valid", %{conn: conn} do
       {:ok, user} = Users.create(%{"name" => "thiamsantos"})
 
-      {:ok, %HTTPoison.Response{body: body1}} = @github_client.get("/users/thiamsantos/starred")
+            {:ok, %HTTPoison.Response{body: first_page}} =
+        @github_client.get("/users/thiamsantos/starred")
 
-      {:ok, %HTTPoison.Response{body: body2}} =
+      {:ok, %HTTPoison.Response{body: second_page}} =
         @github_client.get("/user/13632762/starred?page=2")
 
-      {:ok, %HTTPoison.Response{body: body3}} =
+      {:ok, %HTTPoison.Response{body: third_page}} =
         @github_client.get("/user/13632762/starred?page=3")
 
-      expected = Jason.decode!(body1) ++ Jason.decode!(body2) ++ Jason.decode!(body3)
+      expected =
+        [first_page, second_page, third_page]
+        |> Enum.map(&Jason.decode!/1)
+        |> Enum.concat()
 
       conn = get conn, user_repository_path(conn, :index, user.id)
       actual = json_response(conn, 200)
@@ -29,5 +33,4 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
       assert length(actual) == length(expected)
     end
   end
-
 end

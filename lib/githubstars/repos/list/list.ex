@@ -1,4 +1,7 @@
 defmodule Githubstars.Repos.List do
+  @moduledoc """
+  List the starred repos of an user.
+  """
   use Githubstars.Service
 
   alias Githubstars.Repos.Loader
