@@ -35,7 +35,7 @@ defmodule Githubstars.Users.CreateTest do
       params = %{"name" => "somecreepyname"}
 
       actual = Create.call(params)
-      expected = {:error, {:not_found, %{"message" => "username not found"}}}
+      expected = {:error, {:not_found, [%{"message" => "username not found"}]}}
 
       assert actual == expected
     end
@@ -43,11 +43,18 @@ defmodule Githubstars.Users.CreateTest do
     test "should create the starred repos by the user" do
       {:ok, _user} = Create.call(@valid_params)
 
-      {:ok, %HTTPoison.Response{body: body}} = @github_client.get("/users/thiamsantos/starred")
+      {:ok, %HTTPoison.Response{body: body1}} = @github_client.get("/users/thiamsantos/starred")
+
+      {:ok, %HTTPoison.Response{body: body2}} =
+        @github_client.get("/user/13632762/starred?page=2")
+
+      {:ok, %HTTPoison.Response{body: body3}} =
+        @github_client.get("/user/13632762/starred?page=3")
+
+      body = Jason.decode!(body1) ++ Jason.decode!(body2) ++ Jason.decode!(body3)
 
       expected =
         body
-        |> Jason.decode!()
         |> Enum.map(fn repo -> repo["id"] end)
 
       actual =
@@ -61,11 +68,18 @@ defmodule Githubstars.Users.CreateTest do
     test "should initiate empty for each repo starred by the user" do
       {:ok, user} = Create.call(@valid_params)
 
-      {:ok, %HTTPoison.Response{body: body}} = @github_client.get("/users/thiamsantos/starred")
+      {:ok, %HTTPoison.Response{body: body1}} = @github_client.get("/users/thiamsantos/starred")
+
+      {:ok, %HTTPoison.Response{body: body2}} =
+        @github_client.get("/user/13632762/starred?page=2")
+
+      {:ok, %HTTPoison.Response{body: body3}} =
+        @github_client.get("/user/13632762/starred?page=3")
+
+      body = Jason.decode!(body1) ++ Jason.decode!(body2) ++ Jason.decode!(body3)
 
       expected =
         body
-        |> Jason.decode!()
         |> Enum.map(fn repo ->
           {:ok, id} = ReposLoader.get_repo_id_by_github_id(repo["id"])
           id
@@ -83,11 +97,18 @@ defmodule Githubstars.Users.CreateTest do
     end
 
     test "should not create duplicates repos" do
-      {:ok, %HTTPoison.Response{body: body}} = @github_client.get("/users/thiamsantos/starred")
+      {:ok, %HTTPoison.Response{body: body1}} = @github_client.get("/users/thiamsantos/starred")
+
+      {:ok, %HTTPoison.Response{body: body2}} =
+        @github_client.get("/user/13632762/starred?page=2")
+
+      {:ok, %HTTPoison.Response{body: body3}} =
+        @github_client.get("/user/13632762/starred?page=3")
+
+      body = Jason.decode!(body1) ++ Jason.decode!(body2) ++ Jason.decode!(body3)
 
       expected =
         body
-        |> Jason.decode!()
         |> Enum.map(fn repo ->
           %{
             description: repo["description"],

@@ -19,7 +19,12 @@ defmodule GithubstarsWeb.UserControllerTest do
       conn = post conn, user_path(conn, :create), %{name: nil}
 
       actual = json_response(conn, 422)
-      expected = %{"code" => 100, "message" => "Validation failed!", "errors" => [%{"code" => 101, "field" => "name", "message" => "can't be blank"}]}
+
+      expected = %{
+        "code" => 100,
+        "message" => "Validation failed!",
+        "errors" => [%{"code" => 101, "field" => "name", "message" => "can't be blank"}]
+      }
 
       assert actual === expected
     end
@@ -28,11 +33,12 @@ defmodule GithubstarsWeb.UserControllerTest do
       conn = post conn, user_path(conn, :create), %{name: "somecreepyname"}
 
       actual = json_response(conn, 404)
+
       expected = %{
-              "code" => 200,
-              "errors" => [%{"code" => 200, "message" => "username not found"}],
-              "message" => "Not found!"
-            }
+        "code" => 200,
+        "errors" => [%{"code" => 200, "message" => "username not found"}],
+        "message" => "Not found!"
+      }
 
       assert actual === expected
     end

@@ -42,7 +42,8 @@ defmodule Githubstars.Mixfile do
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:httpoison, "~> 1.0"},
       {:ex_link_header, "~> 0.0.5"},
-      {:jason, "~> 1.0"}
+      {:jason, "~> 1.0"},
+      {:pastry, "~> 0.3.0"}
     ]
   end
 

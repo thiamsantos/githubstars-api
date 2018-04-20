@@ -14,9 +14,9 @@ defmodule Githubstars.Users.Create do
 
   def run(params) do
     with {:ok, request} <- EctoUtils.validate(Params, params),
-         {:ok, body} <- get_starred_repos(request.name),
+         {:ok, true} <- user_exists?(request.name),
          {:ok, user} <- Mutator.create(request),
-         :ok <- save_repos(body, user.id) do
+         :ok <- save_repos(user.name, user.id) do
       {:ok, user}
     else
       {:error, :username_not_found} -> ErrorMessage.not_found("username not found")
@@ -24,10 +24,10 @@ defmodule Githubstars.Users.Create do
     end
   end
 
-  defp get_starred_repos(username) do
-    case @github_client.get("/users/#{username}/starred") do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, body}
+  def user_exists?(username) do
+    case @github_client.head("/users/#{username}") do
+      {:ok, %HTTPoison.Response{status_code: 200}} ->
+        {:ok, true}
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error, :username_not_found}
@@ -37,13 +37,60 @@ defmodule Githubstars.Users.Create do
     end
   end
 
-  defp save_repos(body, user_id) do
+  defp save_repos(username, user_id) do
+    do_save_repos("/users/#{username}/starred", user_id)
+  end
+
+  defp do_save_repos(url, user_id) do
+    with {:ok, %{body: body, headers: headers}} <- get_paged_starred_repos(url),
+         :ok <- parse_and_insert_repos(body, user_id) do
+      case get_next_url(headers) do
+        {:ok, :last_page} -> :ok
+        {:ok, url} -> do_save_repos(url, user_id)
+      end
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp get_next_url(headers) do
+    case ExLinkHeader.parse(Map.get(Map.new(headers), "Link", "")) do
+      {:ok, link_header} -> parse_link_header(link_header)
+      :error -> {:ok, :last_page}
+    end
+  end
+
+  def parse_link_header(link_header) do
+    case Map.get(link_header, :next) do
+      nil -> {:ok, :last_page}
+      next_url -> {:ok, parse_next_link_url(next_url)}
+    end
+  end
+
+  def parse_next_link_url(next_url) do
+    next_url.path <> Pastry.to_query_string(next_url.params)
+  end
+
+  defp parse_and_insert_repos(body, user_id) do
     repos = parse_body(body)
 
     repos
     |> Enum.map(&get_repo_id/1)
     |> initiate_tags(user_id)
     |> Enum.find(:ok, &find_errors/1)
+  end
+
+  defp get_paged_starred_repos(url) do
+    case @github_client.get(url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body, headers: headers}} ->
+        {:ok, %{body: body, headers: headers}}
+
+      {:ok, %HTTPoison.Response{status_code: 404}} ->
+        {:error, :username_not_found}
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        {:error, reason}
+    end
   end
 
   defp find_errors({:error, _reason}), do: true

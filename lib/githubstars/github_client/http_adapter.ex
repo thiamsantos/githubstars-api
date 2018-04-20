@@ -4,7 +4,11 @@ defmodule Githubstars.GithubClient.HTTPAdapter do
   """
   @behaviour Githubstars.GithubClient
 
-  def get(url) do
-    HTTPoison.get("https://api.github.com#{url}")
+  def get(path) do
+    HTTPoison.get("https://api.github.com#{path}")
+  end
+
+  def head(path) do
+    HTTPoison.head("https://api.github.com#{path}")
   end
 end
