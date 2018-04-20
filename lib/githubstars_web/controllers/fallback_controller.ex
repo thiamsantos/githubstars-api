@@ -6,15 +6,15 @@ defmodule GithubstarsWeb.FallbackController do
   """
   use GithubstarsWeb, :controller
 
-  def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
+  alias GithubstarsWeb.Explode
+
+  def call(conn, {:error, {type, errors}}) do
     conn
-    |> put_status(:unprocessable_entity)
-    |> render(GithubstarsWeb.ChangesetView, "error.json", changeset: changeset)
+    |> Explode.reply(type, errors)
   end
 
   def call(conn, {:error, :not_found}) do
     conn
-    |> put_status(:not_found)
-    |> render(GithubstarsWeb.ErrorView, :"404")
+    |> Explode.not_found()
   end
 end

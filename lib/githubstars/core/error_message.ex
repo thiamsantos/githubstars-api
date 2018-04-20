@@ -7,7 +7,7 @@ defmodule Githubstars.Core.ErrorMessage do
   end
 
   def not_found(message) do
-    create(:not_found, %{"message" => message})
+    create(:not_found, [%{"message" => message}])
   end
 
   def validation(error) when is_binary(error), do: create(:validation, error)
