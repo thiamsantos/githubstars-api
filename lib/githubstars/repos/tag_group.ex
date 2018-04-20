@@ -1,4 +1,7 @@
 defmodule Githubstars.Repos.TagGroup do
+  @moduledoc """
+  TagGroup schema.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

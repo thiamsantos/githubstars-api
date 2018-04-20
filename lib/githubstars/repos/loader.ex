@@ -1,4 +1,7 @@
 defmodule Githubstars.Repos.Loader do
+  @moduledoc """
+  Database data loading.
+  """
   alias Githubstars.Repo
   alias Githubstars.Repos.Queries
 

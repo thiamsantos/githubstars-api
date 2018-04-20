@@ -3,13 +3,17 @@ defmodule Githubstars.Users.CreateTest do
 
   alias Githubstars.Users.Create
   alias Githubstars.Users.User
+  alias Githubstars.Repos.{Repository, TagGroup}
+  alias Githubstars.Repos.Loader, as: ReposLoader
+  alias Githubstars.Repos.Mutator, as: ReposMutator
+
+  @github_client Application.get_env(:githubstars, :github_client)
+  @valid_params %{"name" => "thiamsantos"}
 
   describe "call/1" do
     test "should create an user" do
-      params = %{"name" => "thiamsantos"}
-
-      {:ok, user} = Create.call(params)
-      assert user.name == params["name"]
+      {:ok, user} = Create.call(@valid_params)
+      assert user.name == @valid_params["name"]
 
       persisted_user = Repo.get!(User, user.id)
       assert persisted_user == user
@@ -32,6 +36,75 @@ defmodule Githubstars.Users.CreateTest do
 
       actual = Create.call(params)
       expected = {:error, {:not_found, %{"message" => "username not found"}}}
+
+      assert actual == expected
+    end
+
+    test "should create the starred repos by the user" do
+      {:ok, _user} = Create.call(@valid_params)
+
+      {:ok, %HTTPoison.Response{body: body}} = @github_client.get("/users/thiamsantos/starred")
+
+      expected =
+        body
+        |> Jason.decode!()
+        |> Enum.map(fn repo -> repo["id"] end)
+
+      actual =
+        Repository
+        |> Repo.all()
+        |> Enum.map(fn repo -> repo.github_id end)
+
+      assert actual == expected
+    end
+
+    test "should initiate empty for each repo starred by the user" do
+      {:ok, user} = Create.call(@valid_params)
+
+      {:ok, %HTTPoison.Response{body: body}} = @github_client.get("/users/thiamsantos/starred")
+
+      expected =
+        body
+        |> Jason.decode!()
+        |> Enum.map(fn repo ->
+          {:ok, id} = ReposLoader.get_repo_id_by_github_id(repo["id"])
+          id
+        end)
+        |> Enum.map(fn repo_id -> {user.id, repo_id, []} end)
+
+      actual =
+        TagGroup
+        |> Repo.all()
+        |> Enum.map(fn tag_group ->
+          {tag_group.user_id, tag_group.repository_id, tag_group.tags}
+        end)
+
+      assert actual == expected
+    end
+
+    test "should not create duplicates repos" do
+      {:ok, %HTTPoison.Response{body: body}} = @github_client.get("/users/thiamsantos/starred")
+
+      expected =
+        body
+        |> Jason.decode!()
+        |> Enum.map(fn repo ->
+          %{
+            description: repo["description"],
+            github_id: repo["id"],
+            language: repo["language"],
+            name: repo["name"],
+            url: repo["html_url"]
+          }
+        end)
+        |> Enum.map(fn repo ->
+          {:ok, persisted_repo} = ReposMutator.create(repo)
+          persisted_repo
+        end)
+
+      {:ok, _user} = Create.call(@valid_params)
+
+      actual = Repo.all(Repository)
 
       assert actual == expected
     end

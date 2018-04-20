@@ -1,4 +1,7 @@
 defmodule Githubstars.Repos.Mutator do
+  @moduledoc """
+  Database mutations involving the repositories and tags_groups tables.
+  """
   alias Githubstars.Repo
   alias Githubstars.Repos.Repository
   alias Githubstars.Repos.TagGroup

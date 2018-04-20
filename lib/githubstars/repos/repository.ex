@@ -1,4 +1,7 @@
 defmodule Githubstars.Repos.Repository do
+  @moduledoc """
+  Starred repository schema.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

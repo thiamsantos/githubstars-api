@@ -16,3 +16,5 @@ config :githubstars, Githubstars.Repo,
   database: System.get_env("DATABASE_NAME"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
+
+config :githubstars, github_client: Githubstars.GithubClient.HTTPAdapter

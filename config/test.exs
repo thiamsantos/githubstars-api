@@ -17,3 +17,5 @@ config :githubstars, Githubstars.Repo,
   database: "githubstars_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :githubstars, github_client: Githubstars.GithubClient.TestAdapter

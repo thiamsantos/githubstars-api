@@ -44,3 +44,5 @@ config :githubstars, Githubstars.Repo,
   database: "githubstars_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :githubstars, github_client: Githubstars.GithubClient.HTTPAdapter

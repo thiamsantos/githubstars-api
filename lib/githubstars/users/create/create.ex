@@ -10,6 +10,8 @@ defmodule Githubstars.Users.Create do
   alias Githubstars.Users.Create.Params
   alias Githubstars.Core.{ErrorHandler, ErrorMessage, EctoUtils}
 
+  @github_client Application.get_env(:githubstars, :github_client)
+
   def run(params) do
     with {:ok, request} <- EctoUtils.validate(Params, params),
          {:ok, body} <- get_starred_repos(request.name),
@@ -23,7 +25,7 @@ defmodule Githubstars.Users.Create do
   end
 
   defp get_starred_repos(username) do
-    case HTTPoison.get("https://api.github.com/users/#{username}/starred") do
+    case @github_client.get("/users/#{username}/starred") do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body}
 
