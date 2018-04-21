@@ -1,4 +1,4 @@
-defmodule Githubstars.Users.CreateTest do
+defmodule Githubstars.UsersTest do
   use Githubstars.DataCase
 
   alias Githubstars.Users.{Create, User}
@@ -10,7 +10,7 @@ defmodule Githubstars.Users.CreateTest do
   @github_client Application.get_env(:githubstars, :github_client)
   @valid_params %{"name" => "thiamsantos"}
 
-  describe "call/1" do
+  describe "users" do
     test "should create an user" do
       {:ok, user} = Create.call(@valid_params)
       assert user.name == @valid_params["name"]

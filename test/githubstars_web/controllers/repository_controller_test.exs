@@ -13,7 +13,7 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
     test "renders user when data is valid", %{conn: conn} do
       {:ok, user} = Users.create(%{"name" => "thiamsantos"})
 
-            {:ok, %HTTPoison.Response{body: first_page}} =
+      {:ok, %HTTPoison.Response{body: first_page}} =
         @github_client.get("/users/thiamsantos/starred")
 
       {:ok, %HTTPoison.Response{body: second_page}} =

@@ -5,9 +5,15 @@ defmodule Githubstars.Repos.Loader do
   alias Githubstars.Repo
   alias Githubstars.Repos.Queries
 
-  def list_all_by_user_id(user_id) do
+  def list_all_by_user_id(user_id, tag) when is_nil(tag) do
     user_id
     |> Queries.all_by_user_id()
+    |> Repo.all()
+  end
+
+  def list_all_by_user_id(user_id, tag) do
+    user_id
+    |> Queries.all_by_user_id_and_tag(tag)
     |> Repo.all()
   end
 
