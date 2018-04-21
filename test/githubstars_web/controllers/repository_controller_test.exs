@@ -29,9 +29,15 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
         |> Enum.concat()
 
       conn = get conn, user_repository_path(conn, :index, user.id)
-      actual = json_response(conn, 200)["data"]
+      actual = json_response(conn, 200)
 
-      assert length(actual) == length(expected)
+      assert length(actual["data"]) == length(expected)
+      assert actual["_meta"] == %{
+        "page_size" => 30,
+        "page_number" => 1,
+        "total_pages" => 1,
+        "total_entries" => 6
+      }
     end
 
     test "filter repos by tag", %{conn: conn} do
@@ -56,16 +62,37 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
       }
 
       conn = get conn, user_repository_path(conn, :index, user.id, tag: "react")
-      actual = json_response(conn, 200)["data"]
+      actual = json_response(conn, 200)
 
-      assert length(actual) == 1
+      assert length(actual["data"]) == 1
 
-      item = List.first(actual)
+      item = List.first(actual["data"])
       assert item["github_id"] == expected["github_id"]
       assert item["name"] == expected["name"]
       assert item["url"] == expected["url"]
       assert item["description"] == expected["description"]
       assert item["language"] == expected["language"]
+
+      assert actual["_meta"] == %{
+        "page_size" => 30,
+        "page_number" => 1,
+        "total_pages" => 1,
+        "total_entries" => 1
+      }
+    end
+
+    test "should support pagination", %{conn: conn} do
+      {:ok, user} = Users.create(%{"name" => "thiamsantos"})
+
+      conn = get conn, user_repository_path(conn, :index, user.id, page_size: 2, page: 2)
+      actual = json_response(conn, 200)
+
+      assert actual["_meta"] == %{
+        "page_size" => 2,
+        "page_number" => 2,
+        "total_pages" => 3,
+        "total_entries" => 6
+      }
     end
   end
 end

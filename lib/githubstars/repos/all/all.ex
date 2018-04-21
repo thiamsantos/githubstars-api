@@ -10,7 +10,7 @@ defmodule Githubstars.Repos.All do
 
   def run(params) do
     with {:ok, request} <- EctoUtils.validate(Params, params) do
-      {:ok, Loader.all_by_user_id(request.user_id, Map.get(request, :tag))}
+      {:ok, Loader.all_by_user_id(request)}
     else
       {:error, reason} -> ErrorHandler.handle(reason)
     end

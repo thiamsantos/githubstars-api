@@ -19,14 +19,19 @@ defmodule Githubstars.ReposTest do
       {:ok, %HTTPoison.Response{body: third_page}} =
         @github_client.get("/user/13632762/starred?page=3")
 
-      expected =
+      expected_entries =
         [first_page, second_page, third_page]
         |> Enum.map(&Jason.decode!/1)
         |> Enum.concat()
 
-      {:ok, actual} = Repos.all(%{"user_id" => "#{user.id}", "tag" => ""})
+      {:ok, response} = Repos.all(%{"user_id" => "#{user.id}"})
 
-      assert length(actual) == length(expected)
+      assert length(response.entries) == length(expected_entries)
+
+      assert response.page_size == 30
+      assert response.page_number == 1
+      assert response.total_pages == 1
+      assert response.total_entries == length(expected_entries)
     end
 
     test "should filter repositories by tag" do
@@ -41,7 +46,7 @@ defmodule Githubstars.ReposTest do
 
       {:ok, _tags} = Tags.update(update_tags_params)
 
-      {:ok, actual} = Repos.all(%{"user_id" => "#{user.id}", "tag" => "react"})
+      {:ok, response} = Repos.all(%{"user_id" => "#{user.id}", "tag" => "react"})
 
       expected = %{
         "github_id" => 61_527_215,
@@ -52,14 +57,30 @@ defmodule Githubstars.ReposTest do
         "language" => "JavaScript"
       }
 
-      assert length(actual) == 1
+      assert length(response.entries) == 1
 
-      item = List.first(actual)
+      item = List.first(response.entries)
       assert item.github_id == expected["github_id"]
       assert item.name == expected["name"]
       assert item.url == expected["url"]
       assert item.description == expected["description"]
       assert item.language == expected["language"]
+
+      assert response.page_size == 30
+      assert response.page_number == 1
+      assert response.total_pages == 1
+      assert response.total_entries == 1
+    end
+
+    test "should support pagination" do
+      {:ok, user} = Users.create(%{"name" => "thiamsantos"})
+
+      {:ok, response} = Repos.all(%{"user_id" => "#{user.id}", "page_size" => 2, "page" => 2})
+
+      assert response.page_size == 2
+      assert response.page_number == 2
+      assert response.total_pages == 3
+      assert response.total_entries == 6
     end
   end
 end

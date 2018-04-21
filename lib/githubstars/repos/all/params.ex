@@ -10,12 +10,16 @@ defmodule Githubstars.Repos.All.Params do
   ]
 
   @optional_fields [
-    :tag
+    :tag,
+    :page_size,
+    :page
   ]
 
   embedded_schema do
     field :tag, :string
     field :user_id, :string
+    field :page_size, :integer
+    field :page, :integer
   end
 
   @doc false

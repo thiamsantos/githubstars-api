@@ -1,5 +1,6 @@
 defmodule Githubstars.Repo do
   use Ecto.Repo, otp_app: :githubstars
+  use Scrivener, page_size: 30
 
   @doc """
   Dynamically loads the repository url from the

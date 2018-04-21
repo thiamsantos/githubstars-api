@@ -5,16 +5,25 @@ defmodule Githubstars.Repos.Loader do
   alias Githubstars.Repo
   alias Githubstars.Repos.Queries
 
-  def all_by_user_id(user_id, tag) when is_nil(tag) do
-    user_id
-    |> Queries.all_by_user_id()
-    |> Repo.all()
+
+  def all_by_user_id(params) do
+    current_page = Map.get(params, :page, 1)
+    page_size = Map.get(params, :page_size, 30)
+    tag = Map.get(params, :tag)
+
+    params.user_id
+    |> build_all_query(tag)
+    |> Repo.paginate(page: current_page, page_size: page_size)
   end
 
-  def all_by_user_id(user_id, tag) do
+  def build_all_query(user_id, tag) when is_nil(tag) do
+    user_id
+    |> Queries.all_by_user_id()
+  end
+
+  def build_all_query(user_id, tag) do
     user_id
     |> Queries.all_by_user_id_and_tag(tag)
-    |> Repo.all()
   end
 
   def get_repo_id_by_github_id(github_id) do
