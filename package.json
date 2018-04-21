@@ -8,7 +8,9 @@
     "test": "test"
   },
   "scripts": {
-    "cm": "git-cz"
+    "cm": "git-cz",
+    "docs:api": "mkdirp apidocs && raml2html -i docs.raml -o apidocs/index.html",
+    "serve:apidocs": "http-server apidocs"
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,10 @@
   "devDependencies": {
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
-    "husky": "^1.0.0-rc.1"
+    "http-server": "^0.11.1",
+    "husky": "^1.0.0-rc.1",
+    "mkdirp": "^0.5.1",
+    "raml2html": "^7.1.0"
   },
   "config": {
     "commitizen": {

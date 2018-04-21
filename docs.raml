@@ -1,0 +1,136 @@
+#%RAML 1.0
+---
+title: Githubstars API
+baseUri: http://api.example.com/{version}
+version: v1
+
+/users:
+  post:
+    description: Create the user and populate the database with his starred repos
+    body:
+      application/json:
+        type: |
+          {
+            "$id": "https://jsonschema.net",
+            "type": "object",
+            "$schema": "http://json-schema.org/draft-06/schema#",
+            "properties": {
+              "name": {
+                "$id": "/properties/name",
+                "type": "string"
+              }
+            }
+          }
+        example: |
+          {
+            "name": "thiamsantos"
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 20,
+                "name": "thiamsantos"
+              }
+  /{user_id}:
+    /repos:
+      get:
+        description: Get all repos starred by the user
+        queryParameters:
+          tag:
+            displayName: Tag
+            type: string
+            description: An repository tag
+            example: react
+            required: false
+          page:
+            displayName: Page
+            type: number
+            description: Page number
+            default: 1
+            example: 3
+            required: false
+          page_size:
+            displayName: Page Size
+            type: number
+            description: Page size
+            example: 12
+            default: 30
+            required: false
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "data": [
+                      {
+                        "id": 1,
+                        "name": "react-in-patterns",
+                        "description": "A free book that talks about design patterns/techniques used while developing with React.",
+                        "url": "https://github.com/krasimir/react-in-patterns",
+                        "language": "JavaScript",
+                        "github_id": 61527215
+                      },
+                      {
+                        "id": 2,
+                        "name": "permit",
+                        "description": "An unopinionated authentication library for building Node.js APIs.",
+                        "url": "https://github.com/ianstormtaylor/permit",
+                        "language": "JavaScript",
+                        "github_id": 130138377
+                      }
+                    ]
+                    "_meta": {
+                      "page_size": 2,
+                      "page_number": 2,
+                      "total_pages": 5,
+                      "total_entries": 10
+                    }
+                  }
+      /{repo_id}:
+        /tags:
+          get:
+            description: Get all tags of an user's starred repo
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "data": ["react", "js"]
+                      }
+          put:
+            description: Update the tags of an user's starred repo
+            body:
+              application/json:
+                type: |
+                  {
+                    "$id": "https://jsonschema.net/",
+                    "type": "object",
+                    "$schema": "http://json-schema.org/draft-06/schema#",
+                    "properties": {
+                      "tags": {
+                        "$id": "/properties/tags",
+                        "type": "array",
+                        "items": {
+                          "$id": "/properties/tags/items",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                example: |
+                  {
+                    "tags": ["react", "elixir"]
+                  }
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "data": ["react", "elixir"]
+                      }
