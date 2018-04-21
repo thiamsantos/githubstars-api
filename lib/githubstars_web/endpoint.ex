@@ -18,6 +18,8 @@ defmodule GithubstarsWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
 
+  plug CORSPlug
+
   plug GithubstarsWeb.Router
 
   @doc """

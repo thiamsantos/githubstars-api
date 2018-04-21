@@ -43,7 +43,8 @@ defmodule Githubstars.Mixfile do
       {:httpoison, "~> 1.0"},
       {:ex_link_header, "~> 0.0.5"},
       {:jason, "~> 1.0"},
-      {:scrivener_ecto, "~> 1.0"}
+      {:scrivener_ecto, "~> 1.0"},
+      {:cors_plug, "~> 1.5"}
     ]
   end
 
