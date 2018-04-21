@@ -11,7 +11,7 @@ defmodule GithubstarsWeb.RepositoryController do
     tag = Map.get(conn.query_params, :tag, "")
     params = Map.put(params, "tag", tag)
 
-    with {:ok, repositories} <- Repos.list(params) do
+    with {:ok, repositories} <- Repos.all(params) do
       render(conn, "index.json", repositories: repositories)
     end
   end

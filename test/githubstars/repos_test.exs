@@ -1,15 +1,13 @@
 defmodule Githubstars.ReposTest do
   use Githubstars.DataCase
 
-  alias Githubstars.Users
-  alias Githubstars.Repos
+  alias Githubstars.{Users, Repos, Tags}
   alias Githubstars.Repos.Loader
-  alias Githubstars.Tags.Update, as: TagsUpdate
 
   @github_client Application.get_env(:githubstars, :github_client)
 
   describe "repositories" do
-    test "list should return all repositories starred by the user" do
+    test "should return all repositories starred by the user" do
       {:ok, user} = Users.create(%{"name" => "thiamsantos"})
 
       {:ok, %HTTPoison.Response{body: first_page}} =
@@ -26,7 +24,7 @@ defmodule Githubstars.ReposTest do
         |> Enum.map(&Jason.decode!/1)
         |> Enum.concat()
 
-      {:ok, actual} = Repos.list(%{"user_id" => "#{user.id}", "tag" => ""})
+      {:ok, actual} = Repos.all(%{"user_id" => "#{user.id}", "tag" => ""})
 
       assert length(actual) == length(expected)
     end
@@ -37,9 +35,9 @@ defmodule Githubstars.ReposTest do
 
       update_tags_params = %{"repository_id" => "#{repository_id}", "user_id" => "#{user.id}", "tags" => ["react", "js"]}
 
-      {:ok, _tags} = TagsUpdate.call(update_tags_params)
+      {:ok, _tags} = Tags.update(update_tags_params)
 
-      {:ok, actual} = Repos.list(%{"user_id" => "#{user.id}", "tag" => "react"})
+      {:ok, actual} = Repos.all(%{"user_id" => "#{user.id}", "tag" => "react"})
       expected = %{
         "github_id" => 61_527_215,
         "name" => "react-in-patterns",

@@ -1,4 +1,4 @@
-defmodule Githubstars.Tags.List.Params do
+defmodule Githubstars.Tags.All.Params do
   use Ecto.Schema
   import Ecto.Changeset
 

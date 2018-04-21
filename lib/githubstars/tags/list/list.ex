@@ -1,11 +1,11 @@
-defmodule Githubstars.Tags.List do
+defmodule Githubstars.Tags.All do
   @moduledoc """
-  List the tags associated with a given repository.
+  All the tags associated with a given repository.
   """
   use Githubstars.Service
 
   alias Githubstars.Tags.Loader
-  alias Githubstars.Tags.List.Params
+  alias Githubstars.Tags.All.Params
   alias Githubstars.Core.{ErrorHandler, ErrorMessage, EctoUtils}
 
   def run(params) do

@@ -1,9 +1,8 @@
 defmodule GithubstarsWeb.RepositoryView do
   use GithubstarsWeb, :view
-  alias GithubstarsWeb.RepositoryView
 
   def render("index.json", %{repositories: repositories}) do
-    render_many(repositories, RepositoryView, "show.json")
+    render_many(repositories, __MODULE__, "show.json")
   end
 
   def render("show.json", %{repository: repository}) do

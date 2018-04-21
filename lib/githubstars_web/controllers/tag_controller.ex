@@ -6,7 +6,7 @@ defmodule GithubstarsWeb.TagController do
   action_fallback(GithubstarsWeb.FallbackController)
 
   def index(conn, params) do
-    with {:ok, tags} <- Tags.list(params) do
+    with {:ok, tags} <- Tags.all(params) do
       render(conn, "index.json", tags: tags)
     end
   end

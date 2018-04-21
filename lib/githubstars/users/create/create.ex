@@ -73,9 +73,9 @@ defmodule Githubstars.Users.Create do
   end
 
   defp parse_and_insert_repos(body, user_id) do
-    repos = parse_body(body)
+    repositories = parse_body(body)
 
-    repos
+    repositories
     |> Enum.map(&get_repo_id/1)
     |> initiate_tags(user_id)
     |> Enum.find(:ok, &find_errors/1)
@@ -104,8 +104,8 @@ defmodule Githubstars.Users.Create do
     end
   end
 
-  defp initiate_tags(repos, user_id) do
-    repos
+  defp initiate_tags(repositories, user_id) do
+    repositories
     |> Enum.map(fn params ->
       case params do
         {:ok, repo_id} -> TagsMutator.initiate_tag_groups(repo_id, user_id)

@@ -3,8 +3,8 @@ defmodule Githubstars.Tags do
   Tags context.
   """
 
-  alias Githubstars.Tags.{Update, List}
+  alias Githubstars.Tags.{Update, All}
 
   def update(params), do: Update.call(params)
-  def list(params), do: List.call(params)
+  def all(params), do: All.call(params)
 end

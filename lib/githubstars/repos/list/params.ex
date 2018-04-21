@@ -1,4 +1,4 @@
-defmodule Githubstars.Repos.List.Params do
+defmodule Githubstars.Repos.All.Params do
   use Ecto.Schema
   import Ecto.Changeset
 

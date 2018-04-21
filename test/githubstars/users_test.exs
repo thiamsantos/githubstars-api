@@ -1,7 +1,8 @@
 defmodule Githubstars.UsersTest do
   use Githubstars.DataCase
 
-  alias Githubstars.Users.{Create, User}
+  alias Githubstars.Users
+  alias Githubstars.Users.User
   alias Githubstars.Repos.Repository
   alias Githubstars.Tags.TagGroup
   alias Githubstars.Repos.Loader, as: ReposLoader
@@ -12,7 +13,7 @@ defmodule Githubstars.UsersTest do
 
   describe "users" do
     test "should create an user" do
-      {:ok, user} = Create.call(@valid_params)
+      {:ok, user} = Users.create(@valid_params)
       assert user.name == @valid_params["name"]
 
       persisted_user = Repo.get!(User, user.id)
@@ -22,7 +23,7 @@ defmodule Githubstars.UsersTest do
     test "name is required" do
       params = %{"name" => nil}
 
-      actual = Create.call(params)
+      actual = Users.create(params)
 
       expected =
         {:error,
@@ -34,14 +35,14 @@ defmodule Githubstars.UsersTest do
     test "should return not found" do
       params = %{"name" => "somecreepyname"}
 
-      actual = Create.call(params)
+      actual = Users.create(params)
       expected = {:error, {:not_found, [%{"message" => "username not found"}]}}
 
       assert actual == expected
     end
 
     test "should create the starred repos by the user" do
-      {:ok, _user} = Create.call(@valid_params)
+      {:ok, _user} = Users.create(@valid_params)
 
       {:ok, %HTTPoison.Response{body: first_page}} =
         @github_client.get("/users/thiamsantos/starred")
@@ -70,7 +71,7 @@ defmodule Githubstars.UsersTest do
     end
 
     test "should initiate empty for each repo starred by the user" do
-      {:ok, user} = Create.call(@valid_params)
+      {:ok, user} = Users.create(@valid_params)
 
       {:ok, %HTTPoison.Response{body: first_page}} =
         @github_client.get("/users/thiamsantos/starred")
@@ -135,7 +136,7 @@ defmodule Githubstars.UsersTest do
           persisted_repo
         end)
 
-      {:ok, _user} = Create.call(@valid_params)
+      {:ok, _user} = Users.create(@valid_params)
 
       actual = Repo.all(Repository)
 

@@ -2,7 +2,7 @@ defmodule Githubstars.Repos do
   @moduledoc """
   Repos context.
   """
-  alias Githubstars.Repos.List
+  alias Githubstars.Repos.All
 
-  def list(params), do: List.call(params)
+  def all(params), do: All.call(params)
 end
