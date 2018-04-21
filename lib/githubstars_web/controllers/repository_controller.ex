@@ -8,7 +8,7 @@ defmodule GithubstarsWeb.RepositoryController do
   def index(conn, params) do
     conn = fetch_query_params(conn)
 
-    tag = Map.get(conn.query_params, :tag, "")
+    tag = Map.get(conn.query_params, "tag", "")
     params = Map.put(params, "tag", tag)
 
     with {:ok, repositories} <- Repos.all(params) do
