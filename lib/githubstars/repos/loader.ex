@@ -5,7 +5,6 @@ defmodule Githubstars.Repos.Loader do
   alias Githubstars.Repo
   alias Githubstars.Repos.Queries
 
-
   def all_by_user_id(params) do
     current_page = Map.get(params, :page, 1)
     page_size = Map.get(params, :page_size, 30)

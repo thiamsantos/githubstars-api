@@ -4,7 +4,7 @@ defmodule GithubstarsWeb.RepositoryView do
   def render("index.json", %{repositories: repositories}) do
     %{
       data: render_many(repositories.entries, __MODULE__, "repository.json"),
-      "_meta": render_one(repositories, __MODULE__, "meta.json"),
+      _meta: render_one(repositories, __MODULE__, "meta.json")
     }
   end
 

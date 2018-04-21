@@ -5,9 +5,9 @@ defmodule Githubstars.Users.Mutator do
   alias Githubstars.Repo
   alias Githubstars.Users.User
 
-  def create(attrs \\ %{}) do
+  def create(username) do
     %User{}
-    |> User.changeset(attrs)
+    |> User.changeset(%{name: username})
     |> Repo.insert()
   end
 end

@@ -32,12 +32,13 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
       actual = json_response(conn, 200)
 
       assert length(actual["data"]) == length(expected)
+
       assert actual["_meta"] == %{
-        "page_size" => 30,
-        "page_number" => 1,
-        "total_pages" => 1,
-        "total_entries" => 6
-      }
+               "page_size" => 30,
+               "page_number" => 1,
+               "total_pages" => 1,
+               "total_entries" => 6
+             }
     end
 
     test "filter repos by tag", %{conn: conn} do
@@ -74,11 +75,11 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
       assert item["language"] == expected["language"]
 
       assert actual["_meta"] == %{
-        "page_size" => 30,
-        "page_number" => 1,
-        "total_pages" => 1,
-        "total_entries" => 1
-      }
+               "page_size" => 30,
+               "page_number" => 1,
+               "total_pages" => 1,
+               "total_entries" => 1
+             }
     end
 
     test "should support pagination", %{conn: conn} do
@@ -88,11 +89,11 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
       actual = json_response(conn, 200)
 
       assert actual["_meta"] == %{
-        "page_size" => 2,
-        "page_number" => 2,
-        "total_pages" => 3,
-        "total_entries" => 6
-      }
+               "page_size" => 2,
+               "page_number" => 2,
+               "total_pages" => 3,
+               "total_entries" => 6
+             }
     end
   end
 end

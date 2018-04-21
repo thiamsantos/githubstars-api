@@ -70,6 +70,38 @@ defmodule Githubstars.UsersTest do
       assert actual == expected
     end
 
+    test "return the user if it already exists but the repos stay the same" do
+      {:ok, user1} = Users.create(@valid_params)
+      {:ok, user2} = Users.create(@valid_params)
+
+      assert user1 == user2
+
+      {:ok, %HTTPoison.Response{body: first_page}} =
+        @github_client.get("/users/thiamsantos/starred")
+
+      {:ok, %HTTPoison.Response{body: second_page}} =
+        @github_client.get("/user/13632762/starred?page=2")
+
+      {:ok, %HTTPoison.Response{body: third_page}} =
+        @github_client.get("/user/13632762/starred?page=3")
+
+      body =
+        [first_page, second_page, third_page]
+        |> Enum.map(&Jason.decode!/1)
+        |> Enum.concat()
+
+      expected =
+        body
+        |> Enum.map(fn repo -> repo["id"] end)
+
+      actual =
+        Repository
+        |> Repo.all()
+        |> Enum.map(fn repo -> repo.github_id end)
+
+      assert actual == expected
+    end
+
     test "should initiate empty for each repo starred by the user" do
       {:ok, user} = Users.create(@valid_params)
 

@@ -33,7 +33,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "mix format && mix credo --strict && mix test"
+      "pre-commit": "mix format && mix credo && mix test"
     }
   }
 }
