@@ -1,4 +1,7 @@
 defmodule Githubstars.Tags.Update.Params do
+  @moduledoc """
+  Params for update the tags associated with an starred repository.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

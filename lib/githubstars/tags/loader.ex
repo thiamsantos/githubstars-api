@@ -1,4 +1,7 @@
 defmodule Githubstars.Tags.Loader do
+  @moduledoc """
+  Load from database.
+  """
   alias Githubstars.Repo
   alias Githubstars.Tags.Queries
 

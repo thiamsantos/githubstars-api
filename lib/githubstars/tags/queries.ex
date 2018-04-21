@@ -1,4 +1,7 @@
 defmodule Githubstars.Tags.Queries do
+  @moduledoc """
+  Ecto queries.
+  """
   import Ecto.Query, warn: false
 
   alias Githubstars.Tags.TagGroup

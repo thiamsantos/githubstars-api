@@ -1,4 +1,7 @@
 defmodule Githubstars.Repos.All.Params do
+  @moduledoc """
+  Params for get all repos associated with an user.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

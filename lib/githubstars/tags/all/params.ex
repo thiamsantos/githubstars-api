@@ -1,4 +1,7 @@
 defmodule Githubstars.Tags.All.Params do
+  @moduledoc """
+  Params for get all tags associated with an starred repository.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,6 +1,6 @@
 defmodule Githubstars.Repos.All do
   @moduledoc """
-  All the starred repos of an user.
+  Get all the starred repos of an user.
   """
   use Githubstars.Service
 

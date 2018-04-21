@@ -1,6 +1,6 @@
 defmodule Githubstars.Tags.All do
   @moduledoc """
-  All the tags associated with a given repository.
+  Get all the tags associated with a given repository.
   """
   use Githubstars.Service
 

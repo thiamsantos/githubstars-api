@@ -33,11 +33,16 @@ defmodule Githubstars.ReposTest do
       {:ok, user} = Users.create(%{"name" => "thiamsantos"})
       {:ok, repository_id} = Loader.get_repo_id_by_github_id(61_527_215)
 
-      update_tags_params = %{"repository_id" => "#{repository_id}", "user_id" => "#{user.id}", "tags" => ["react", "js"]}
+      update_tags_params = %{
+        "repository_id" => "#{repository_id}",
+        "user_id" => "#{user.id}",
+        "tags" => ["react", "js"]
+      }
 
       {:ok, _tags} = Tags.update(update_tags_params)
 
       {:ok, actual} = Repos.all(%{"user_id" => "#{user.id}", "tag" => "react"})
+
       expected = %{
         "github_id" => 61_527_215,
         "name" => "react-in-patterns",
