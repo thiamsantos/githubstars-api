@@ -14,7 +14,7 @@ defmodule GithubstarsWeb.TagControllerTest do
       {:ok, repository_id} = ReposLoader.get_repo_id_by_github_id(61_527_215)
 
       conn = get conn, user_repository_tag_path(conn, :index, user.id, repository_id)
-      actual = json_response(conn, 200)
+      actual = json_response(conn, 200)["data"]
 
       assert actual == []
     end
@@ -29,14 +29,12 @@ defmodule GithubstarsWeb.TagControllerTest do
 
       path = user_repository_tag_path(conn, :index, user.id, repository_id, params)
       conn = put conn, path
-      update_response = json_response(conn, 200)
+      update_response = json_response(conn, 200)["data"]
 
-      assert update_response["user_id"] == user.id
-      assert update_response["repository_id"] == repository_id
-      assert update_response["tags"] == ["react", "js"]
+      assert update_response == ["react", "js"]
 
       conn = get conn, user_repository_tag_path(conn, :index, user.id, repository_id)
-      list_response = json_response(conn, 200)
+      list_response = json_response(conn, 200)["data"]
 
       assert list_response == ["react", "js"]
     end

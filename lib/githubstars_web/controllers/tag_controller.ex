@@ -12,8 +12,8 @@ defmodule GithubstarsWeb.TagController do
   end
 
   def update(conn, params) do
-    with {:ok, tag_group} <- Tags.update(params) do
-      render(conn, "show.json", tag_group: tag_group)
+    with {:ok, tags} <- Tags.update(params) do
+      render(conn, "index.json", tags: tags)
     end
   end
 end

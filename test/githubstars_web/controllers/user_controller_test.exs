@@ -10,7 +10,7 @@ defmodule GithubstarsWeb.UserControllerTest do
   describe "create user" do
     test "renders user when data is valid", %{conn: conn} do
       conn = post conn, user_path(conn, :create), @create_attrs
-      assert %{"id" => _id, "name" => name} = json_response(conn, 201)
+      assert %{"id" => _id, "name" => name} = json_response(conn, 201)["data"]
 
       assert name == @create_attrs[:name]
     end

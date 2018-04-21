@@ -29,7 +29,7 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
         |> Enum.concat()
 
       conn = get conn, user_repository_path(conn, :index, user.id)
-      actual = json_response(conn, 200)
+      actual = json_response(conn, 200)["data"]
 
       assert length(actual) == length(expected)
     end
@@ -56,7 +56,7 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
       }
 
       conn = get conn, user_repository_path(conn, :index, user.id, tag: "react")
-      actual = json_response(conn, 200)
+      actual = json_response(conn, 200)["data"]
 
       assert length(actual) == 1
 
