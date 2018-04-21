@@ -10,8 +10,8 @@ defmodule GithubstarsWeb.Router do
 
     resources "/users", UserController, only: [:create] do
       resources "/repos", RepositoryController, only: [:index] do
-        resources "/tags", TagController, only: [:index]
         resources "/tags", TagController, only: [:update], singleton: true
+        resources "/tags", TagController, only: [:index]
       end
     end
   end

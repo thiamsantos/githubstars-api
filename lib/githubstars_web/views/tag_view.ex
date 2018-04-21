@@ -1,8 +1,8 @@
 defmodule GithubstarsWeb.TagView do
   use GithubstarsWeb, :view
 
-  def render("index.json", %{tag_groups: tag_groups}) do
-    render_many(tag_groups, __MODULE__, "tag_group.json")
+  def render("index.json", %{tags: tags}) do
+    tags
   end
 
   def render("show.json", %{tag_group: tag_group}) do
