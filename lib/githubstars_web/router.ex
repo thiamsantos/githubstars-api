@@ -5,7 +5,7 @@ defmodule GithubstarsWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", GithubstarsWeb do
+  scope "/v1", GithubstarsWeb do
     pipe_through :api
 
     resources "/users", UserController, only: [:create] do
