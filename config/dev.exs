@@ -43,6 +43,10 @@ config :githubstars, Githubstars.Repo,
   password: "postgres",
   database: "githubstars_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 10,
+  timeout: 60_000,
+  pool_timeout: 60_000
 
 config :githubstars, github_client: Githubstars.GithubClient.HTTPAdapter
+
+import_config "#{Mix.env()}.secret.exs"

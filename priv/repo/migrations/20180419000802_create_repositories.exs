@@ -4,7 +4,7 @@ defmodule Githubstars.Repo.Migrations.CreateRepositories do
   def change do
     create table(:repositories) do
       add(:name, :string)
-      add(:description, :string)
+      add(:description, :text)
       add(:url, :string)
       add(:language, :string)
       add(:github_id, :integer)

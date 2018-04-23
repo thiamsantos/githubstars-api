@@ -15,6 +15,10 @@ config :githubstars, Githubstars.Repo,
   password: System.get_env("DATABASE_PASSWORD"),
   database: System.get_env("DATABASE_NAME"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+  timeout: 60_000,
+  pool_timeout: 60_000,
   ssl: true
 
-config :githubstars, github_client: Githubstars.GithubClient.HTTPAdapter
+config :githubstars,
+  github_client: Githubstars.GithubClient.HTTPAdapter,
+  github_oauth_token: System.get_env("GITHUB_OAUTH_TOKEN")

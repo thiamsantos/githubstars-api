@@ -5,8 +5,8 @@ defmodule Githubstars.Repos.Repository do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @required_fields [:name, :description, :url, :github_id]
-  @optional_fields [:language]
+  @required_fields [:name, :url, :github_id]
+  @optional_fields [:language, :description]
 
   schema "repositories" do
     field :description, :string
