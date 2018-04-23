@@ -54,12 +54,14 @@ defmodule Githubstars.ReposTest do
         "url" => "https://github.com/krasimir/react-in-patterns",
         "description" =>
           "A free book that talks about design patterns/techniques used while developing with React.",
-        "language" => "JavaScript"
+        "language" => "JavaScript",
+        "tags" => ["react", "js"]
       }
 
       assert length(response.entries) == 1
 
       item = List.first(response.entries)
+      assert item.tags == expected["tags"]
       assert item.github_id == expected["github_id"]
       assert item.name == expected["name"]
       assert item.url == expected["url"]
@@ -81,6 +83,33 @@ defmodule Githubstars.ReposTest do
       assert response.page_number == 2
       assert response.total_pages == 3
       assert response.total_entries == 6
+    end
+
+    test "should get one repo" do
+      {:ok, user} = Users.create(%{"name" => "thiamsantos"})
+      {:ok, repository_id} = Loader.get_repo_id_by_github_id(61_527_215)
+
+      params = %{"user_id" => "#{user.id}", "id" => "#{repository_id}"}
+      {:ok, actual} = Repos.show(params)
+
+      expected = %{
+        "github_id" => 61_527_215,
+        "name" => "react-in-patterns",
+        "url" => "https://github.com/krasimir/react-in-patterns",
+        "description" =>
+          "A free book that talks about design patterns/techniques used while developing with React.",
+        "language" => "JavaScript",
+        "tags" => [],
+        "id" => repository_id
+      }
+
+      assert actual.id == repository_id
+      assert actual.tags == expected["tags"]
+      assert actual.github_id == expected["github_id"]
+      assert actual.name == expected["name"]
+      assert actual.url == expected["url"]
+      assert actual.description == expected["description"]
+      assert actual.language == expected["language"]
     end
   end
 end

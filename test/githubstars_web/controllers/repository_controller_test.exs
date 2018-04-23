@@ -59,7 +59,8 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
         "url" => "https://github.com/krasimir/react-in-patterns",
         "description" =>
           "A free book that talks about design patterns/techniques used while developing with React.",
-        "language" => "JavaScript"
+        "language" => "JavaScript",
+        "tags" => ["react", "js"]
       }
 
       conn = get conn, user_repository_path(conn, :index, user.id, tag: "react")
@@ -69,6 +70,7 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
 
       item = List.first(actual["data"])
       assert item["github_id"] == expected["github_id"]
+      assert item["tags"] == expected["tags"]
       assert item["name"] == expected["name"]
       assert item["url"] == expected["url"]
       assert item["description"] == expected["description"]
@@ -94,6 +96,28 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
                "total_pages" => 3,
                "total_entries" => 6
              }
+    end
+
+    test "get one repository", %{conn: conn} do
+      {:ok, user} = Users.create(%{"name" => "thiamsantos"})
+      {:ok, repository_id} = Loader.get_repo_id_by_github_id(61_527_215)
+
+      path = user_repository_path(conn, :show, user.id, repository_id)
+      conn = get conn, path
+      actual = json_response(conn, 200)["data"]
+
+      expected = %{
+        "github_id" => 61_527_215,
+        "name" => "react-in-patterns",
+        "url" => "https://github.com/krasimir/react-in-patterns",
+        "description" =>
+          "A free book that talks about design patterns/techniques used while developing with React.",
+        "language" => "JavaScript",
+        "tags" => [],
+        "id" => repository_id
+      }
+
+      assert actual == expected
     end
   end
 end

@@ -18,6 +18,10 @@ defmodule Githubstars.Repos.Repository do
     timestamps()
   end
 
+  def fields do
+    @required_fields ++ @optional_fields ++ [:id, :inserted_at, :updated_at]
+  end
+
   @doc false
   def changeset(repository, attrs) do
     repository

@@ -15,4 +15,10 @@ defmodule GithubstarsWeb.RepositoryController do
       render(conn, "index.json", repositories: repositories)
     end
   end
+
+  def show(conn, params) do
+    with {:ok, repository} <- Repos.show(params) do
+      render(conn, "show.json", repository: repository)
+    end
+  end
 end

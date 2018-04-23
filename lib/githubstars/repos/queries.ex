@@ -13,12 +13,20 @@ defmodule Githubstars.Repos.Queries do
       select: [:id]
   end
 
+  def one_by_id(user_id, id) do
+    from t in TagGroup,
+      join: r in Repository,
+      on: r.id == t.repository_id,
+      where: t.user_id == ^user_id and r.id == ^id,
+      select: merge(map(r, ^Repository.fields()), %{tags: t.tags})
+  end
+
   def all_by_user_id(user_id) do
     from t in TagGroup,
       join: r in Repository,
       on: r.id == t.repository_id,
       where: t.user_id == ^user_id,
-      select: r
+      select: merge(map(r, ^Repository.fields()), %{tags: t.tags})
   end
 
   def all_by_user_id_and_tag(user_id, tag) do
@@ -26,6 +34,6 @@ defmodule Githubstars.Repos.Queries do
       join: r in Repository,
       on: r.id == t.repository_id,
       where: t.user_id == ^user_id and ^tag in t.tags,
-      select: r
+      select: merge(map(r, ^Repository.fields()), %{tags: t.tags})
   end
 end

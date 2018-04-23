@@ -72,7 +72,8 @@ version: v1
                         "description": "A free book that talks about design patterns/techniques used while developing with React.",
                         "url": "https://github.com/krasimir/react-in-patterns",
                         "language": "JavaScript",
-                        "github_id": 61527215
+                        "github_id": 61527215,
+                        "tags": ["react", "js"]
                       },
                       {
                         "id": 2,
@@ -80,7 +81,8 @@ version: v1
                         "description": "An unopinionated authentication library for building Node.js APIs.",
                         "url": "https://github.com/ianstormtaylor/permit",
                         "language": "JavaScript",
-                        "github_id": 130138377
+                        "github_id": 130138377,
+                        "tags": ["node", "js"]
                       }
                     ]
                     "_meta": {
@@ -91,6 +93,24 @@ version: v1
                     }
                   }
       /{repo_id}:
+        get:
+          description: Get one repo starred by the user
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      "data": {
+                        "id": 1,
+                        "name": "react-in-patterns",
+                        "description": "A free book that talks about design patterns/techniques used while developing with React.",
+                        "url": "https://github.com/krasimir/react-in-patterns",
+                        "language": "JavaScript",
+                        "github_id": 61527215,
+                        "tags": ["react", "js"]
+                      }
+                    }
         /tags:
           get:
             description: Get all tags of an user's starred repo

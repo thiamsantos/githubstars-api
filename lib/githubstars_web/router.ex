@@ -9,7 +9,7 @@ defmodule GithubstarsWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, only: [:create] do
-      resources "/repos", RepositoryController, only: [:index] do
+      resources "/repos", RepositoryController, only: [:index, :show] do
         resources "/tags", TagController, only: [:update], singleton: true
         resources "/tags", TagController, only: [:index]
       end

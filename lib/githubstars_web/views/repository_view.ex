@@ -8,6 +8,12 @@ defmodule GithubstarsWeb.RepositoryView do
     }
   end
 
+  def render("show.json", %{repository: repository}) do
+    %{
+      data: render_one(repository, __MODULE__, "repository.json")
+    }
+  end
+
   def render("repository.json", %{repository: repository}) do
     %{
       id: repository.id,
@@ -15,7 +21,8 @@ defmodule GithubstarsWeb.RepositoryView do
       description: repository.description,
       url: repository.url,
       language: repository.language,
-      github_id: repository.github_id
+      github_id: repository.github_id,
+      tags: repository.tags
     }
   end
 
