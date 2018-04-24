@@ -55,7 +55,7 @@ defmodule Githubstars.ReposTest do
         "description" =>
           "A free book that talks about design patterns/techniques used while developing with React.",
         "language" => "JavaScript",
-        "tags" => ["react", "js"]
+        "tags" => ["js", "react"]
       }
 
       assert length(response.entries) == 1

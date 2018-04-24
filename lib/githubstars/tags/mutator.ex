@@ -24,7 +24,21 @@ defmodule Githubstars.Tags.Mutator do
 
   defp do_update_tags(tag_group, tags) do
     tag_group
-    |> TagGroup.changeset(%{tags: tags})
+    |> TagGroup.changeset(%{tags: parse_tags(tags)})
     |> Repo.update()
+  end
+
+  defp parse_tags(tags) when is_list(tags) do
+    tags =
+      tags
+      |> Enum.map(&parse_tag/1)
+      |> MapSet.new()
+      |> MapSet.to_list()
+  end
+
+  defp parse_tag(tag) when is_binary(tag) do
+    tag
+    |> String.trim()
+    |> String.downcase()
   end
 end

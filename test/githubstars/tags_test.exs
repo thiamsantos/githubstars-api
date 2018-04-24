@@ -30,7 +30,25 @@ defmodule Githubstars.TagsTest do
       {:ok, _tags} = Tags.update(update_params)
 
       actual = Tags.all(all_params)
-      expected = {:ok, ["react", "js"]}
+      expected = {:ok, ["js", "react"]}
+
+      assert actual == expected
+    end
+
+    test "the tags should be lowercased, trimmed and unique" do
+      {:ok, user} = Users.create(%{"name" => "thiamsantos"})
+      {:ok, repository_id} = ReposLoader.get_repo_id_by_github_id(61_527_215)
+
+      all_params = %{"repository_id" => "#{repository_id}", "user_id" => "#{user.id}"}
+
+      update_params =
+        all_params
+        |> Map.put("tags", ["react", "js", "js", "react", "ELIXIR", "  tag  "])
+
+      {:ok, _tags} = Tags.update(update_params)
+
+      actual = Tags.all(all_params)
+      expected = {:ok, ["elixir", "js", "react", "tag"]}
 
       assert actual == expected
     end

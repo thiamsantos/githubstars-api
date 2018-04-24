@@ -60,7 +60,7 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
         "description" =>
           "A free book that talks about design patterns/techniques used while developing with React.",
         "language" => "JavaScript",
-        "tags" => ["react", "js"]
+        "tags" => ["js", "react"]
       }
 
       conn = get conn, user_repository_path(conn, :index, user.id, tag: "react")

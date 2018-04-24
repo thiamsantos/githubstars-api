@@ -31,12 +31,12 @@ defmodule GithubstarsWeb.TagControllerTest do
       conn = put conn, path
       update_response = json_response(conn, 200)["data"]
 
-      assert update_response == ["react", "js"]
+      assert update_response == ["js", "react"]
 
       conn = get conn, user_repository_tag_path(conn, :index, user.id, repository_id)
       list_response = json_response(conn, 200)["data"]
 
-      assert list_response == ["react", "js"]
+      assert list_response == ["js", "react"]
     end
   end
 end
