@@ -29,11 +29,10 @@ defmodule Githubstars.Tags.Mutator do
   end
 
   defp parse_tags(tags) when is_list(tags) do
-    tags =
-      tags
-      |> Enum.map(&parse_tag/1)
-      |> MapSet.new()
-      |> MapSet.to_list()
+    tags
+    |> Enum.map(&parse_tag/1)
+    |> MapSet.new()
+    |> MapSet.to_list()
   end
 
   defp parse_tag(tag) when is_binary(tag) do

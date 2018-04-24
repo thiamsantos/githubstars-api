@@ -32,6 +32,18 @@ defmodule Githubstars.UsersTest do
       assert actual == expected
     end
 
+    test "name is invalid" do
+      params = %{"name" => 123}
+
+      actual = Users.create(params)
+
+      expected =
+        {:error,
+         {:validation, [%{"field" => "name", "message" => "is invalid", "type" => :cast}]}}
+
+      assert actual == expected
+    end
+
     test "should return not found" do
       params = %{"name" => "somecreepyname"}
 

@@ -80,5 +80,6 @@ defmodule GithubstarsWeb.Explode do
 
   defp get_error_code(:validation), do: 100
   defp get_error_code(:required), do: 101
+  defp get_error_code(:cast), do: 102
   defp get_error_code(:not_found), do: 200
 end

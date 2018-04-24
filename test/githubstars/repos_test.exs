@@ -34,6 +34,15 @@ defmodule Githubstars.ReposTest do
       assert response.total_entries == length(expected_entries)
     end
 
+    test "invalid user id" do
+      {:ok, user} = Users.create(%{"name" => "thiamsantos"})
+
+      actual = Repos.all(%{"user_id" => "#{user.id + 1}"})
+      expected = {:error, {:not_found, [%{"message" => "user not found"}]}}
+
+      assert actual == expected
+    end
+
     test "should filter repositories by tag" do
       {:ok, user} = Users.create(%{"name" => "thiamsantos"})
       {:ok, repository_id} = Loader.get_repo_id_by_github_id(61_527_215)

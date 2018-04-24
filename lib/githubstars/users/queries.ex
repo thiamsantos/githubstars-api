@@ -9,4 +9,8 @@ defmodule Githubstars.Users.Queries do
   def one_by_name(name) do
     from u in User, where: u.name == ^name
   end
+
+  def one_by_id(id) do
+    from u in User, where: u.id == ^id
+  end
 end

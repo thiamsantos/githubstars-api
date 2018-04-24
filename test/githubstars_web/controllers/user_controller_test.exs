@@ -29,6 +29,22 @@ defmodule GithubstarsWeb.UserControllerTest do
       assert actual === expected
     end
 
+    test "name with wrong type", %{conn: conn} do
+      conn = post conn, user_path(conn, :create), %{name: 123}
+
+      actual = json_response(conn, 422)
+
+      expected = %{
+        "code" => 100,
+        "errors" => [
+          %{"code" => 102, "field" => "name", "message" => "is invalid"}
+        ],
+        "message" => "Validation failed!"
+      }
+
+      assert actual === expected
+    end
+
     test "return 404 when username not found", %{conn: conn} do
       conn = post conn, user_path(conn, :create), %{name: "somecreepyname"}
 

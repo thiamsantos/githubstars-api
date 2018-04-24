@@ -41,6 +41,21 @@ defmodule GithubstarsWeb.RepositoryControllerTest do
              }
     end
 
+    test "invalid user", %{conn: conn} do
+      {:ok, user} = Users.create(%{"name" => "thiamsantos"})
+
+      conn = get conn, user_repository_path(conn, :index, user.id + 100)
+      actual = json_response(conn, 404)
+
+      expected = %{
+        "code" => 200,
+        "errors" => [%{"code" => 200, "message" => "user not found"}],
+        "message" => "Not found!"
+      }
+
+      assert actual == expected
+    end
+
     test "filter repos by tag", %{conn: conn} do
       {:ok, user} = Users.create(%{"name" => "thiamsantos"})
       {:ok, repository_id} = Loader.get_repo_id_by_github_id(61_527_215)
