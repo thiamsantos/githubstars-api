@@ -34,6 +34,50 @@ version: v1
                 "id": 20,
                 "name": "thiamsantos"
               }
+      422:
+        body:
+          application/json:
+            example: |
+              {
+                "code": 100,
+                "message": "Validation failed!",
+                "errors": [
+                  {
+                    "code": 101,
+                    "field": "name",
+                    "message": "can't be blank"
+                  }
+                ]
+              }
+      422:
+        body:
+          application/json:
+            example: |
+              {
+                "code": 100,
+                "message": "Validation failed!",
+                "errors": [
+                  {
+                    "code": 102,
+                    "field": "name",
+                    "message": "is invalid"
+                  }
+                ]
+              }
+      404:
+        body:
+          application/json:
+            example: |
+              {
+                "code": 200,
+                "errors": [
+                  {
+                    "code": 200,
+                    "message": "username not found"
+                  }
+                ],
+                "message": "Not found!"
+              }
   /{user_id}:
     /repos:
       get:
@@ -92,6 +136,20 @@ version: v1
                       "total_entries": 10
                     }
                   }
+          404:
+            body:
+              application/json:
+                example: |
+                  {
+                    "code": 200,
+                    "errors": [
+                      {
+                        "code": 200,
+                        "message": "user not found"
+                      }
+                    ],
+                    "message": "Not found!"
+                  }
       /{repo_id}:
         get:
           description: Get one repo starred by the user
@@ -121,6 +179,34 @@ version: v1
                     example: |
                       {
                         "data": ["react", "js"]
+                      }
+              404:
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "code": 200,
+                        "errors": [
+                          {
+                            "code": 200,
+                            "message": "tags not found"
+                          }
+                        ],
+                        "message": "Not found!"
+                      }
+              404:
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "code": 200,
+                        "errors": [
+                          {
+                            "code": 200,
+                            "message": "tags not found"
+                          }
+                        ],
+                        "message": "Not found!"
                       }
           put:
             description: Update the tags of an user's starred repo
@@ -153,4 +239,34 @@ version: v1
                     example: |
                       {
                         "data": ["react", "elixir"]
+                      }
+              422:
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "code": 100,
+                        "errors": [
+                          {
+                            "code": 101,
+                            "field": "tags",
+                            "message": "can't be blank"
+                          }
+                        ],
+                        "message": "Validation failed!"
+                      }
+              422:
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "code": 100,
+                        "errors": [
+                          {
+                            "code": 102,
+                            "field": "tags",
+                            "message": "is invalid"
+                          }
+                        ],
+                        "message": "Validation failed!"
                       }
