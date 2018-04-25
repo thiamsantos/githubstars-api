@@ -1,5 +1,13 @@
 # Githubstars
 
+This project uses [elixir](https://elixir-lang.org/) and [PostgreSQL](https://www.postgresql.org/).
+Go check them out if you don't have them locally installed.
+
+The following versions are recommended:
+
+  * elixir v1.4
+  * PostgreSQL v10
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
